@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkish-Africa Express | Transfert 5%</title>
+    <style>
+        :root { --primary: #ffcc00; --secondary: #d32f2f; --dark: #1a1a1a; --success: #2e7d32; }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; color: #333; }
+        header { background: var(--dark); color: white; padding: 15px; text-align: center; font-weight: bold; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=80&w=600&auto=format&fit=crop'); background-size: cover; padding: 40px 20px 80px; text-align: center; color: white; }
+        .container { max-width: 450px; margin: -60px auto 40px; padding: 0 15px; }
+        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .calc-box { background: #fffdf0; border: 1px dashed var(--primary); padding: 15px; border-radius: 10px; margin: 20px 0; }
+        .calc-row { display: flex; justify-content: space-between; margin: 8px 0; }
+        .total-row { border-top: 2px solid #eee; padding-top: 10px; font-weight: bold; font-size: 18px; color: var(--success); }
+        .btn-wa { background: #25D366; color: white; text-align: center; display: block; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 18px; transition: 0.3s; border: none; width: 100%; cursor: pointer; }
+        .btn-wa:hover { background: #1eb956; }
+        footer { text-align: center; font-size: 11px; color: #999; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <header>TURKISH-AFRICA API</header>
+    <div class="hero">
+        <h1>Envoyez de l'argent au pays</h1>
+        <p>Transfert direct Garanti vers MTN Money</p>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="form-group">
+                <label>Montant en Livre Turque (TL)</label>
+                <input type="number" id="tryAmt" placeholder="Ex: 1000" oninput="calc()">
+            </div>
+            <div class="form-group">
+                <label>Bénéficiaire & Numéro MTN</label>
+                <input type="text" id="name" placeholder="Nom complet">
+                <input type="tel" id="phone" placeholder="Numéro MTN" style="margin-top:10px">
+            </div>
+            <div class="calc-box">
+                <div class="calc-row"><span>Taux :</span><strong>1 TL = 12.25 FCFA</strong></div>
+                <div class="calc-row" style="color:var(--secondary)"><span>Frais (5%) :</span><span id="fee">0 FCFA</span></div>
+                <div class="calc-row total-row"><span>Net à recevoir :</span><span id="net">0 FCFA</span></div>
+            </div>
+            <button onclick="send()" class="btn-wa">🚀 Valider sur WhatsApp</button>
+        </div>
+        <footer>© 2026 Service de transfert indépendant.</footer>
+    </div>
+    <script>
+        const R = 12.25, F = 0.05;
+        function calc() {
+            let v = parseFloat(document.getElementById('tryAmt').value) || 0;
+            let raw = v * R, fee = raw * F, net = raw - fee;
+            document.getElementById('fee').innerText = Math.floor(fee).toLocaleString() + " FCFA";
+            document.getElementById('net').innerText = Math.floor(net).toLocaleString() + " FCFA";
+        }
+        function send() {
+            let amt = document.getElementById('tryAmt').value, n = document.getElementById('name').value, p = document.getElementById('phone').value, nt = document.getElementById('net').innerText;
+            if(!amt || !n || !p) return alert("Remplissez tout !");
+            let wa = "905395856977"; // REMPLACE PAR TON NUMÉRO ICI
+            let msg = `*TRANSFERT TURQUIE-AFRIQUE*%0A*Envoi:* ${amt} TL%0A*Nom:* ${n}%0A*Numéro:* ${p}%0A*Net:* ${nt}%0A-----------------%0AMerci de m'envoyer l'IBAN Garanti.`;
+            window.location.href = `https://wa.me/${wa}?text=${msg}`;
+        }
+    </script>
+</body>
+</html>
